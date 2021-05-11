@@ -63,31 +63,36 @@ def pausar_despausar():
         tocador_estado = True
 
 
+bg_cor = "white"  # Cor de fundo da aplicação
+
 root = Tk()
 root.title("Tocador de Músicas")
+root.configure(bg=bg_cor)
 root.iconbitmap("icon.ico")
-root.geometry("283x73+26+26")
+root.geometry("300x100+26+26")
 root.resizable(width=False, height=False)
-
-frame_principal = Frame(root)
-frame_principal.pack()
+root.grid_columnconfigure(0, weight=1)
+root.grid_rowconfigure(2, weight=1)
 
 tocador = AudioPlayer
 tocador_estado = False  # Se está tocando música
 
 # Botão para escolher a música
-botao_escolher_musica = Button(frame_principal, text="Escolher Música", command=escolher_musica)
-botao_escolher_musica.grid(row=0, column=0)
+botao_escolher_musica = Button(root, text="Escolher Música", command=escolher_musica, anchor=CENTER,
+                               activebackground=bg_cor)
+botao_escolher_musica.grid(row=0, column=0, pady=7)
 
 # Botão para controlar a música
 imagem_despausado = ImageTk.PhotoImage(Image.open("play-button-arrowhead.png"))
 imagem_pausado = ImageTk.PhotoImage(Image.open("pause-button.png"))
-botao_pausar = Button(frame_principal, command=pausar_despausar, state=DISABLED, image=imagem_despausado, bd=0)
-botao_pausar.grid(row=1, column=0)
+botao_pausar = Button(root, command=pausar_despausar, state=DISABLED, image=imagem_despausado, bd=0, anchor=CENTER,
+                      bg=bg_cor, activebackground=bg_cor)
+botao_pausar.grid(row=1, column=0, sticky=N+S, pady=3)
 
 # Label mostrando o nome da música
-label_nome_musica = Label(frame_principal, text="Nenhuma Música")
-label_nome_musica.grid(row=2, column=0)
+label_nome_musica = Label(root, text="Nenhuma Música", anchor=S, relief=SUNKEN, bg="orange", bd=0, pady=3,
+                          activebackground=bg_cor)
+label_nome_musica.grid(row=2, column=0, sticky=W+E+S)
 
 escolher_musica()
 
