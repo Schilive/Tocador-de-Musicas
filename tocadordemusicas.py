@@ -6,9 +6,17 @@ from audioplayer import AudioPlayer
 from PIL import ImageTk, Image
 
 
+def reiniciar_tocador(arquivo_caminho):
+    global tocador, tocador_estado, musica_iniciada
+
+    tocador = AudioPlayer(arquivo_caminho)
+    botao_pausar.configure(text="Começar", state=ACTIVE, image=imagem_despausado)
+    tocador_estado = False
+    musica_iniciada = False
+
+
 def escolher_musica():
     """O usuário escolhe o arquivo duma música."""
-    global tocador, tocador_estado
 
     formatos_suportados = (("MP3", "*.mp3"),)
     arquivo_caminho = filedialog.askopenfilename(title="Selecione um arquivo de som",
@@ -17,21 +25,18 @@ def escolher_musica():
     if arquivo_caminho == "":
         return
 
-    try:  # Checa se o caminho é válido
-        tocador = AudioPlayer(arquivo_caminho)
-        tocador.volume = 0
-        tocador.play()
+    try:  # Checa se o arquivo é válido
+        tocador_teste = AudioPlayer(arquivo_caminho)
+        tocador_teste.volume = 0
+        tocador_teste.play()
     except audioplayer.abstractaudioplayer.AudioPlayerError:
-        botao_pausar.configure(state=DISABLED)
         messagebox.showwarning(title="Tocador de Músicas", message=f"{arquivo_caminho}\nO Tocador de "
                                                                    "Músicas não pode ler o arquivo.\nEsse não é um "
                                                                    "arquivo váliado ou não há suporte para ele.")
     else:
         # Reinicia o tocador
-        tocador.stop()
-        tocador.volume = 100
-        botao_pausar.configure(text="Começar", state=ACTIVE)
-        tocador_estado = False
+        tocador_teste.close()
+        reiniciar_tocador(arquivo_caminho)
 
         # Formatando o nome do arquivo
         arquivo_nome_list = []
@@ -49,17 +54,20 @@ def escolher_musica():
 
 
 def pausar_despausar():
-    global tocador, tocador_estado
-
-    print(root.winfo_geometry())
+    global tocador, tocador_estado, musica_iniciada
 
     if tocador_estado:
         tocador.pause()
-        botao_pausar.configure(text="Despausar", image=imagem_despausado)
+        botao_pausar.configure(image=imagem_despausado)
         tocador_estado = False
+    elif not musica_iniciada:
+        tocador.play()
+        botao_pausar.configure(image=imagem_pausado)
+        tocador_estado = True
+        musica_iniciada = True
     else:
         tocador.resume()
-        botao_pausar.configure(text="Pausar", image=imagem_pausado)
+        botao_pausar.configure(image=imagem_pausado)
         tocador_estado = True
 
 
@@ -74,8 +82,9 @@ root.resizable(width=False, height=False)
 root.grid_columnconfigure(0, weight=1)
 root.grid_rowconfigure(2, weight=1)
 
-tocador = AudioPlayer
+tocador = AudioPlayer("")
 tocador_estado = False  # Se está tocando música
+musica_iniciada = False  # Se já
 
 # Botão para escolher a música
 botao_escolher_musica = Button(root, text="Escolher Música", command=escolher_musica, anchor=CENTER,
