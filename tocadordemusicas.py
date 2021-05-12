@@ -6,6 +6,10 @@ from audioplayer import AudioPlayer
 from PIL import ImageTk, Image
 
 
+def atualizar_volume(valor):
+    tocador.volume = int(valor)
+
+
 def reiniciar_tocador(arquivo_caminho):
     global tocador, tocador_estado, musica_iniciada
 
@@ -102,8 +106,10 @@ botao_pausar.grid(row=1, column=0, sticky=N)
 
 # Slider para controlar o volume
 scale_volume = Scale(root, from_=0, to=100, orient=HORIZONTAL, showvalue=False, bg=bg_cor, activebackground=bg_cor,
-                     bd=0, sliderrelief=RAISED, highlightbackground=bg_cor, width=10, sliderlength=20)
+                     bd=0, sliderrelief=RAISED, highlightbackground=bg_cor, width=10, sliderlength=20,
+                     command=atualizar_volume)
 scale_volume.grid(row=2, column=0, sticky=N, pady=5)
+scale_volume.set(100)
 
 # Label mostrando o nome da música
 label_nome_musica = Label(root, text="Nenhuma Música", anchor=S, relief=SUNKEN, bg=in_cor, bd=0, pady=3,
