@@ -72,6 +72,8 @@ def pausar_despausar():
 
 
 bg_cor = "white"  # Cor de fundo da aplicação
+in_cor = "light green"  # Cor-tema
+fonte_cor = "black"  # Cor da fonte
 
 root = Tk()
 root.title("Tocador de Músicas")
@@ -84,11 +86,11 @@ root.grid_rowconfigure(2, weight=1)
 
 tocador = AudioPlayer("")
 tocador_estado = False  # Se está tocando música
-musica_iniciada = False  # Se já
+musica_iniciada = False  # Se a música atual já foi iniciada
 
 # Botão para escolher a música
 botao_escolher_musica = Button(root, text="Escolher Música", command=escolher_musica, anchor=CENTER,
-                               activebackground=bg_cor)
+                               activebackground=bg_cor, bg=in_cor, fg=fonte_cor, bd=1, relief="solid")
 botao_escolher_musica.grid(row=0, column=0, pady=7)
 
 # Botão para controlar a música
@@ -99,10 +101,9 @@ botao_pausar = Button(root, command=pausar_despausar, state=DISABLED, image=imag
 botao_pausar.grid(row=1, column=0, sticky=N+S, pady=3)
 
 # Label mostrando o nome da música
-label_nome_musica = Label(root, text="Nenhuma Música", anchor=S, relief=SUNKEN, bg="orange", bd=0, pady=3,
-                          activebackground=bg_cor)
+label_nome_musica = Label(root, text="Nenhuma Música", anchor=S, relief=SUNKEN, bg=in_cor, bd=0, pady=3,
+                          activebackground=bg_cor, fg=fonte_cor)
 label_nome_musica.grid(row=2, column=0, sticky=W+E+S)
 
-escolher_musica()
 
 root.mainloop()
