@@ -2,59 +2,59 @@ from tkinter import *
 
 
 class SliderVolume(Frame):
-    def __init__(self, parent, x=0, y=0, length_line=130, func=None, color="gray", **options):
+    def __init__(self, parent, x=0, y=0, largura_linha=130, func=None, cor="gray", **options):
         Frame.__init__(self, parent, **options)
 
-        self.min_button = x  # Smallest x-position the slider may be and its starting position
-        self.y = y  # The slider's y-position
-        self.length = length_line  # The length of the slider's line
-        self.func = func  # Fuction called when the slider's value changes
-        self.color = color  # The color of the scaler's button
+        self.min_botao = x  # Menor posição horizontal em que o botão do slider deve estar e sua posição inicial
+        self.y = y  # A posição vertical do slider no programa
+        self.largura = largura_linha  # A largura da linha do slider
+        self.func = func  # Função chamada quando o valor do slider se altera
+        self.cor = cor  # A cor do botão do slider
 
-        # Draws the slider's line
-        self.canvas = Canvas(parent, highlightthickness=0, borderwidth=0, height=self.winfo_reqheight(),
-                             width=self.length)
-        self.canvas.create_line(0, 0, self.length, 0, width=10)
+        # Desenha a linha do slider
+        self.linha = Canvas(parent, highlightthickness=0, borderwidth=0, height=self.winfo_reqheight(),
+                            width=self.largura)
+        self.linha.create_line(0, 0, self.largura, 0, width=10)
 
-        # The button, which is the slider itself
-        self.button = Button(parent, text="", bg=self.color, activebackground=self.color, relief=SOLID, bd=0.2)
-        self.max_button = self.length + self.min_button - self.button.winfo_reqwidth()  # Biggest x-position the
-        # slider may be
-        self.button.bind("<B1-Motion>", self.button_pressed)
-        self.button.bind("<ButtonRelease-1>", self.button_released)
+        # O botão, que é o slider em si
+        self.botao = Button(parent, text="", bg=self.cor, activebackground=self.cor, relief=SOLID, bd=0.2)
+        self.max_button = self.largura + self.min_botao - self.botao.winfo_reqwidth()  # Maior posição horizontal em
+        # que o slider deve estar
+        self.botao.bind("<B1-Motion>", self.botao_pressionado)
+        self.botao.bind("<ButtonRelease-1>", self.botao_solto)
 
-        # Places the widgets
-        self.canvas.place(x=self.min_button, y=self.y + 12)
-        self.button.place(x=self.min_button, y=self.y)
+        # Pões os widgets
+        self.linha.place(x=self.min_botao, y=self.y + 12)
+        self.botao.place(x=self.min_botao, y=self.y)
 
-    def button_pressed(self, event):
-        """Called when the button is both pressed and moved. Moves slider where the mouse is going to"""
+    def botao_pressionado(self, event):
+        """Chamada quando o botão se pressiou e moveu. Move o slider aonde o mouse está"""
 
-        position = max(self.button.winfo_x() + event.x, self.min_button)  # Button's position to be
-        position = min(position, self.max_button)
-        self.button.place(x=position)
+        posicao = max(self.botao.winfo_x() + event.x, self.min_botao)  # Vindoura posição do botão
+        posicao = min(posicao, self.max_button)
+        self.botao.place(x=posicao)
 
         if self.func is not None:
             self.func(self.get())
 
-    def button_released(self, event):
-        """Called when the button is released. Calls the function given as an argument"""
+    def botao_solto(self, event):
+        """Chamada quando o botão é solto. Chama a função dada como argumento."""
 
         if self.func is not None:
             self.func(self.get())
 
     def get(self):
-        """The slider's value in percentage (0%–100%), which is (0–1)"""
+        """O valor do slider em porcentagem (0%–100%), i.e., (0–1)"""
 
-        current_position = self.button.winfo_x()
-        percentage_position = (current_position - self.min_button) / (self.max_button - self.min_button)
-        return percentage_position
+        posicao_atual = self.botao.winfo_x()
+        posicao_porcentagem = (posicao_atual - self.min_botao) / (self.max_button - self.min_botao)
+        return posicao_porcentagem
 
     def set(self, value_percentage):
-        """Sets the slider's value in percentage"""
+        """Define o valor do slider em porcentagem"""
 
-        position = value_percentage * (self.max_button - self.min_button) + self.min_button
-        position = max(position, self.min_button)
-        position = min(position, self.max_button)
-        self.button.place(x=position)
+        posicao = value_percentage * (self.max_button - self.min_botao) + self.min_botao
+        posicao = max(posicao, self.min_botao)
+        posicao = min(posicao, self.max_button)
+        self.botao.place(x=posicao)
 

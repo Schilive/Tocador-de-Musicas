@@ -9,16 +9,20 @@ from SliderVolume import SliderVolume
 
 
 def atualizar_volume(valor):
+    """Autaliza o volume do tocador de músicas"""
+
     volume = valor * 100
     tocador.volume = volume
 
 
 def reiniciar_tocador(arquivo_caminho):
+    """Reconfigura o tocador de músicas"""
+
     global tocador, tocador_estado, musica_iniciada
 
     tocador = AudioPlayer(arquivo_caminho)
     atualizar_volume(slider_volume.get())
-    botao_pausar.configure(text="Começar", state=ACTIVE, image=imagem_despausado)
+    botao_pausar.configure(text="Começar", state=ACTIVE, image=imagem_despausar)
     tocador_estado = False
     musica_iniciada = False
 
@@ -33,7 +37,7 @@ def escolher_musica():
     if arquivo_caminho == "":
         return
 
-    try:  # Checa se o arquivo é válido
+    try:  # Checa se o arquivo é válido, tocando um tocador-de=músicas-dummy
         tocador_teste = AudioPlayer(arquivo_caminho)
         tocador_teste.volume = 0
         tocador_teste.play()
@@ -48,7 +52,7 @@ def escolher_musica():
 
         # Formatando o nome do arquivo
         arquivo_nome_list = []
-        ponto_formato = True
+        ponto_formato = True  # Se o primeiro ponto da direita para a esquerda já se encontrou
         for c in arquivo_caminho[-1::-1]:
             if c == "." and ponto_formato:
                 arquivo_nome_list = []
@@ -62,20 +66,22 @@ def escolher_musica():
 
 
 def pausar_despausar():
+    """Pausa ou despausa a música"""
+
     global tocador, tocador_estado, musica_iniciada
 
-    if tocador_estado:
+    if tocador_estado:  # Se tocando
         tocador.pause()
-        botao_pausar.configure(image=imagem_despausado)
+        botao_pausar.configure(image=imagem_despausar)
         tocador_estado = False
     elif not musica_iniciada:
         tocador.play()
-        botao_pausar.configure(image=imagem_pausado)
+        botao_pausar.configure(image=imagem_pausar)
         tocador_estado = True
         musica_iniciada = True
     else:
         tocador.resume()
-        botao_pausar.configure(image=imagem_pausado)
+        botao_pausar.configure(image=imagem_pausar)
         tocador_estado = True
 
 
@@ -102,14 +108,14 @@ botao_escolher_musica = Button(root, text="Escolher Música", command=escolher_m
 botao_escolher_musica.grid(row=0, column=0, pady=7)
 
 # Botão para controlar a música
-imagem_despausado = ImageTk.PhotoImage(Image.open("play-button-arrowhead.png"))
-imagem_pausado = ImageTk.PhotoImage(Image.open("pause-button.png"))
-botao_pausar = Button(root, command=pausar_despausar, state=DISABLED, image=imagem_despausado, bd=0, anchor=CENTER,
+imagem_despausar = ImageTk.PhotoImage(Image.open("play-button-arrowhead.png"))
+imagem_pausar = ImageTk.PhotoImage(Image.open("pause-button.png"))
+botao_pausar = Button(root, command=pausar_despausar, state=DISABLED, image=imagem_despausar, bd=0, anchor=CENTER,
                       bg=bg_cor, activebackground=bg_cor)
 botao_pausar.grid(row=1, column=0, sticky=N)
 
 # Slider para controlar o volume
-slider_volume = SliderVolume(root, length_line=80, x=110, y=67, func=atualizar_volume, color=in_cor)
+slider_volume = SliderVolume(root, largura_linha=80, x=110, y=67, func=atualizar_volume, cor=in_cor)
 slider_volume.set(1)
 
 # Label mostrando o nome da música
