@@ -62,6 +62,8 @@ def escolher_musica():
             else:
                 break
         arquivo_nome = "".join(arquivo_nome_list[-1::-1])
+        if len(arquivo_nome) > 26:  # If the song's name is too long
+            arquivo_nome = arquivo_nome[0:23] + "..."
         label_nome_musica.configure(text=arquivo_nome)
 
 
