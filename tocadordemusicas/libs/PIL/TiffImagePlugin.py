@@ -582,9 +582,9 @@ class ImageFileDirectory_v2(MutableMapping):
         # No Spec, Actual length 1, Formerly (<4.2) returned a 1 element tuple.
         # Don't mess with the legacy api, since it's frozen.
         if not is_ifd and (
-            (info.length == 1)
-            or self.tagtype[tag] == TiffTags.BYTE
-            or (info.length is None and len(values) == 1 and not legacy_api)
+                (info.length == 1)
+                or self.tagtype[tag] == TiffTags.BYTE
+                or (info.length is None and len(values) == 1 and not legacy_api)
         ):
             # Don't mess with the legacy api, since it's frozen.
             if legacy_api and self.tagtype[tag] in [

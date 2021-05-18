@@ -1,1 +1,0 @@
-Para iniciar o Tocador de Músicas, abra tocadordemusicas.pyw. Para isso, é necessário ter o Python instalado.

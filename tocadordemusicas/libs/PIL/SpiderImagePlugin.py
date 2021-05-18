@@ -36,7 +36,8 @@ import os
 import struct
 import sys
 
-from PIL import Image, ImageFile
+from tocadordemusicas.libs.PIL import Image
+from tocadordemusicas.libs.PIL import ImageFile, ImageTk
 
 
 def isInt(f):
@@ -187,7 +188,6 @@ class SpiderImageFile(ImageFile.ImageFile):
 
     # returns a ImageTk.PhotoImage object, after rescaling to 0..255
     def tkPhotoImage(self):
-        from PIL import ImageTk
 
         return ImageTk.PhotoImage(self.convert2byte(), palette=256)
 

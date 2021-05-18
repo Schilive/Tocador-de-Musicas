@@ -17,10 +17,10 @@
 
 import sys
 
-from PIL import Image
+from tocadordemusicas.libs.PIL import Image
 
 try:
-    from PIL import _imagingcms
+    from tocadordemusicas.libs.PIL import _imagingcms
 except ImportError as ex:
     # Allow error import for doc purposes, but error out when accessing
     # anything in core.
@@ -267,7 +267,7 @@ def get_display_profile(handle=None):
     if sys.platform != "win32":
         return None
 
-    from PIL import ImageWin
+    from . import ImageWin
 
     if isinstance(handle, ImageWin.HDC):
         profile = core.get_display_profile_win32(handle, 1)

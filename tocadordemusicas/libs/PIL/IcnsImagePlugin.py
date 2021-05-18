@@ -23,11 +23,11 @@ import subprocess
 import sys
 import tempfile
 
-from PIL import Image, ImageFile, PngImagePlugin, features
+from tocadordemusicas.libs.PIL import Image, features
 
 enable_jpeg2k = features.check_codec("jpg_2000")
 if enable_jpeg2k:
-    from PIL import Jpeg2KImagePlugin
+    from tocadordemusicas.libs.PIL import Jpeg2KImagePlugin, PngImagePlugin, ImageFile
 
 HEADERSIZE = 8
 

@@ -18,7 +18,7 @@ import sys
 import tempfile
 from shlex import quote
 
-from PIL import Image
+from tocadordemusicas.libs.PIL import Image
 
 _viewers = []
 

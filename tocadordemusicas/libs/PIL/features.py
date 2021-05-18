@@ -3,7 +3,7 @@ import os
 import sys
 import warnings
 
-import PIL
+from .. import PIL
 
 from . import Image
 

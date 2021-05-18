@@ -1,11 +1,12 @@
 from tkinter import *
 from tkinter import filedialog, messagebox
 
-import audioplayer.abstractaudioplayer
-from audioplayer import AudioPlayer
-from PIL import ImageTk, Image
+from tocadordemusicas.libs.audioplayer.abstractaudioplayer import AudioPlayerError
+from tocadordemusicas.libs.audioplayer import AudioPlayer
+from tocadordemusicas.libs.PIL import Image
+from tocadordemusicas.libs.PIL import ImageTk
 
-from SliderVolume import SliderVolume
+from tocadordemusicas.internal_dependecies.SliderVolume import SliderVolume
 
 
 def atualizar_volume(valor):
@@ -41,7 +42,7 @@ def escolher_musica():
         tocador_teste = AudioPlayer(arquivo_caminho)
         tocador_teste.volume = 0
         tocador_teste.play()
-    except audioplayer.abstractaudioplayer.AudioPlayerError:
+    except AudioPlayerError:
         messagebox.showwarning(title="Tocador de Músicas", message=f"{arquivo_caminho}\nO Tocador de "
                                                                    "Músicas não pode ler o arquivo.\nEsse não é um "
                                                                    "arquivo váliado ou não há suporte para ele.")
@@ -145,14 +146,14 @@ botao_escolher_musica = Button(root, text="Escolher Música", command=escolher_m
 botao_escolher_musica.grid(row=0, column=0, pady=7)
 
 # Botão para controlar a música
-imagem_despausar = ImageTk.PhotoImage(Image.open("play-button.png"))
-imagem_pausar = ImageTk.PhotoImage(Image.open("pause-button.png"))
+imagem_despausar = ImageTk.PhotoImage(Image.open("internal_dependecies/img/play-button.png"))
+imagem_pausar = ImageTk.PhotoImage(Image.open("internal_dependecies/img/pause-button.png"))
 botao_pausar = Button(root, command=pausar_despausar, state=DISABLED, image=imagem_despausar, bd=0, anchor=CENTER,
                       bg=bg_cor, activebackground=bg_cor)
 botao_pausar.place(x=121, y=38)
 
 # Botão para parar a música
-imagem_parar = ImageTk.PhotoImage(Image.open("stop-button.png"))
+imagem_parar = ImageTk.PhotoImage(Image.open("internal_dependecies/img/stop-button.png"))
 botao_parar = Label(root, image=imagem_parar, bd=0, bg=bg_cor, activebackground=bg_cor)
 botao_parar.bind("<Button-1>", parar_musica)
 botao_parar.place(x=153, y=39)
