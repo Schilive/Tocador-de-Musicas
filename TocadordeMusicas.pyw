@@ -67,24 +67,59 @@ def escolher_musica():
         label_nome_musica.configure(text=arquivo_nome)
 
 
-def pausar_despausar():
-    """Pausa ou despausa a música"""
+def pausar_musica():
+    """Pausa a música"""
+
+    global tocador, tocador_estado
+
+    tocador.pause()
+    botao_pausar.configure(image=imagem_despausar)
+    tocador_estado = False
+
+
+def despausar_musica():
+    """Despausa a música"""
+
+    global tocador, tocador_estado
+
+    tocador.resume()
+    botao_pausar.configure(image=imagem_pausar)
+    tocador_estado = True
+
+
+def iniciar_musica():
+    """Inicia uma música que não se iniciara"""
 
     global tocador, tocador_estado, musica_iniciada
 
+    tocador.play()
+    botao_pausar.configure(image=imagem_pausar)
+    tocador_estado = True
+    musica_iniciada = True
+
+
+def pausar_despausar():
+    """Pausa ou despausa a música"""
+
+    global tocador_estado, musica_iniciada
+
     if tocador_estado:  # Se tocando
-        tocador.pause()
-        botao_pausar.configure(image=imagem_despausar)
-        tocador_estado = False
+        pausar_musica()
     elif not musica_iniciada:
-        tocador.play()
-        botao_pausar.configure(image=imagem_pausar)
-        tocador_estado = True
-        musica_iniciada = True
+        iniciar_musica()
     else:
-        tocador.resume()
-        botao_pausar.configure(image=imagem_pausar)
-        tocador_estado = True
+        despausar_musica()
+
+
+def parar_musica(event):
+    """Para a música"""
+
+    global tocador_estado, musica_iniciada
+
+    tocador.stop()
+    botao_pausar.configure(image=imagem_despausar)
+    tocador_estado = False
+    musica_iniciada = False
 
 
 bg_cor = "white"  # Cor de fundo da aplicação
@@ -98,7 +133,7 @@ root.iconbitmap("icon.ico")
 root.geometry("300x115+26+26")
 root.resizable(width=False, height=False)
 root.grid_columnconfigure(0, weight=1)
-root.grid_rowconfigure(2, weight=1)
+root.grid_rowconfigure(3, weight=1)
 
 tocador = AudioPlayer("")
 tocador_estado = False  # Se está tocando música
@@ -110,11 +145,17 @@ botao_escolher_musica = Button(root, text="Escolher Música", command=escolher_m
 botao_escolher_musica.grid(row=0, column=0, pady=7)
 
 # Botão para controlar a música
-imagem_despausar = ImageTk.PhotoImage(Image.open("play-button-arrowhead.png"))
+imagem_despausar = ImageTk.PhotoImage(Image.open("play-button.png"))
 imagem_pausar = ImageTk.PhotoImage(Image.open("pause-button.png"))
 botao_pausar = Button(root, command=pausar_despausar, state=DISABLED, image=imagem_despausar, bd=0, anchor=CENTER,
                       bg=bg_cor, activebackground=bg_cor)
-botao_pausar.grid(row=1, column=0, sticky=N)
+botao_pausar.place(x=121, y=38)
+
+# Botão para parar a música
+imagem_parar = ImageTk.PhotoImage(Image.open("stop-button.png"))
+botao_parar = Label(root, image=imagem_parar, bd=0, bg=bg_cor, activebackground=bg_cor)
+botao_parar.bind("<Button-1>", parar_musica)
+botao_parar.place(x=153, y=39)
 
 # Slider para controlar o volume
 slider_volume = SliderVolume(root, largura_linha=80, x=110, y=67, func=atualizar_volume, cor=in_cor)
